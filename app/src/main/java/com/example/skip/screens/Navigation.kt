@@ -13,7 +13,7 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "MainStudent"
+        startDestination = "MainTeacher"
     ) {
         composable(route = "Login") {
             LoginScreen(navController)

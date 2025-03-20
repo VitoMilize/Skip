@@ -6,19 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.montanainc.simpleloginscreen.components.BottomComponent
 import com.montanainc.simpleloginscreen.components.HeadingTextComponent
-import com.montanainc.simpleloginscreen.components.MyTextFieldComponent
-import com.montanainc.simpleloginscreen.components.PasswordTextFieldComponent
+import com.montanainc.simpleloginscreen.components.ViewAllRequestsButton
 
 @Composable
 fun MainScreenTeacher(navController: NavHostController) {
@@ -32,19 +27,9 @@ fun MainScreenTeacher(navController: NavHostController) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            HeadingTextComponent(value = "Добро пожаловать в Skip")
+            HeadingTextComponent(value = "Бондарь Кирилл Олегович")
             Spacer(modifier = Modifier.height(25.dp))
-            Column {
-                MyTextFieldComponent(labelValue = "Почта", icon = Icons.Outlined.Email)
-                Spacer(modifier = Modifier.height(10.dp))
-                PasswordTextFieldComponent(labelValue = "Пароль", icon = Icons.Outlined.Lock)
-            }
-            BottomComponent(
-                textQuery = "Еще нет аккаунта? ",
-                textClickable = "Зарегистрируйтесь",
-                action = "Войти",
-                navController
-            )
+            ViewAllRequestsButton {}
         }
     }
 }
