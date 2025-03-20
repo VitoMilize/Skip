@@ -4,8 +4,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitClient {
-    private const val BASE_URL = "http://51.250.40.237/"
+object RetrofitClientV1 {
+    private const val BASE_URL = "https://j2fyo7-79-136-223-200.ru.tuna.am/api/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
