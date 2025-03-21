@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.skip.screens.CreateRequestScreen
 import com.example.skip.screens.MainScreenStudent
 import com.example.skip.screens.MainScreenTeacher
 
@@ -26,6 +27,9 @@ fun Navigation() {
         }
         composable(route = "MainTeacher") {
             MainScreenTeacher(navController)
+        }
+        composable(route = "CreateRequest") {
+            CreateRequestScreen(navController)
         }
     }
 }

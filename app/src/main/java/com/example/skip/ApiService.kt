@@ -1,4 +1,5 @@
 package com.example.skip
+import com.example.skip.dataclasses.CreateRequest
 import com.example.skip.dataclasses.LoginRequest
 import com.example.skip.dataclasses.LoginResponse
 import com.example.skip.dataclasses.RegistrationRequest
@@ -19,4 +20,7 @@ interface ApiService {
 
     @GET("v1/users/me")
     fun getMe(@Header("Authorization") token: String): Call<User>
+
+    @POST("v1/requests")
+    fun createRequest(@Body request: CreateRequest, @Header("Authorization") token: String): Call<User>
 }

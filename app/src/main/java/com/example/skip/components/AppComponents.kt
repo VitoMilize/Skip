@@ -1,8 +1,9 @@
 package com.montanainc.simpleloginscreen.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -118,6 +121,131 @@ fun MyTextFieldComponent(labelValue: String, icon: ImageVector, textValue: Strin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun MyTextFieldComponentNoIcon(labelValue: String, textValue: String, onTextChanged: (String) -> Unit) {
+    OutlinedTextField(
+        label = {
+            Text(text = labelValue)
+        },
+        value = textValue,
+        onValueChange = { onTextChanged(it) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = AccentColor,
+            focusedLabelColor = AccentColor,
+            cursorColor = Primary,
+            containerColor = BgColor,
+            focusedLeadingIconColor = AccentColor,
+        ),
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        keyboardOptions = KeyboardOptions.Default,
+        textStyle = TextStyle(color = TextColor)
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTextFieldComponentSelector(
+    labelValue: String,
+    selectedOption: String,
+    options: List<String>,
+    onOptionSelected: (String) -> Unit
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { expanded = true }
+            .padding(vertical = 4.dp)
+    ) {
+        OutlinedTextField(
+            label = { Text(text = labelValue) },
+            value = selectedOption,
+            onValueChange = {},
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = AccentColor,
+                focusedLabelColor = AccentColor,
+                cursorColor = Primary,
+                containerColor = BgColor,
+                focusedLeadingIconColor = AccentColor,
+                disabledTextColor = TextColor,
+                disabledBorderColor = TextColor
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            keyboardOptions = KeyboardOptions.Default,
+            textStyle = TextStyle(color = TextColor),
+            readOnly = true,
+            enabled = false
+        )
+    }
+
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false }
+    ) {
+        options.forEach { option ->
+            DropdownMenuItem(
+                text = { Text(text = option) },
+                onClick = {
+                    onOptionSelected(option)
+                    expanded = false
+                }
+            )
+        }
+    }
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTextFieldComponentNoIconClickable(
+    labelValue: String,
+    textValue: String,
+    onClick: () -> Unit
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { onClick() }
+    ) {
+        OutlinedTextField(
+            label = { Text(text = labelValue) },
+            value = textValue,
+            onValueChange = {},
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = AccentColor,
+                focusedLabelColor = AccentColor,
+                cursorColor = Primary,
+                containerColor = BgColor,
+                focusedLeadingIconColor = AccentColor,
+                disabledTextColor = TextColor,
+                disabledBorderColor = TextColor
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            keyboardOptions = KeyboardOptions.Default,
+            textStyle = TextStyle(color = TextColor),
+            readOnly = true,
+            enabled = false // Отключаем редактирование
+        )
+    }
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun PasswordTextFieldComponent(labelValue: String, icon: ImageVector, textValue: String, onTextChanged: (String) -> Unit
 ) {
     var isPasswordVisible by remember {
@@ -158,51 +286,6 @@ fun PasswordTextFieldComponent(labelValue: String, icon: ImageVector, textValue:
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         textStyle = TextStyle(color = TextColor)
     )
-}
-
-@Composable
-fun ClickableTextComponent() {
-    val initialText = "By continuing you accept our "
-    val privacyPolicyText = "Privacy Policy"
-    val andText = " and "
-    val termOfUseText = "Term of Use"
-
-    val annotatedString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = TextColor)) {
-            append(initialText)
-        }
-        withStyle(style = SpanStyle(color = Secondary)) {
-            pushStringAnnotation(tag = privacyPolicyText, annotation = privacyPolicyText)
-            append(privacyPolicyText)
-        }
-        withStyle(style = SpanStyle(color = TextColor)) {
-            append(andText)
-        }
-        withStyle(style = SpanStyle(color = Secondary)) {
-            pushStringAnnotation(tag = termOfUseText, annotation = termOfUseText)
-            append(termOfUseText)
-        }
-        append(".")
-    }
-
-    ClickableText(text = annotatedString, onClick = {
-        annotatedString.getStringAnnotations(it, it)
-            .firstOrNull()?.also { annotation ->
-                Log.d("ClickableTextComponent", "You have Clicked ${annotation.tag}")
-            }
-    })
-}
-
-@Composable
-fun BottomComponent(
-    textQuery: String,
-    textClickable: String,
-    action: String,
-    navController: NavHostController,
-    email: String,
-    password: String
-) {
-
 }
 
 @Composable

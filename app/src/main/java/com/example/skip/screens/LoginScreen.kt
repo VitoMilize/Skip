@@ -28,7 +28,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.skip.AuthViewModel
 import com.example.skip.RetrofitClientAuth
 import com.example.skip.RetrofitClientV1
 import com.example.skip.dataclasses.LoginRequest
@@ -44,15 +46,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private fun loginUser(email: String, password: String, navController: NavHostController) {
+private fun loginUser(email: String, password: String, navController: NavHostController, authViewModel: AuthViewModel) {
     val request = LoginRequest(email, password)
 
     RetrofitClientAuth.instance.login(request).enqueue(object : Callback<LoginResponse> {
         override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
             if (response.isSuccessful) {
                 val loginResponse = response.body()
-
-                RetrofitClientV1.instance.getMe("Bearer ${loginResponse!!.token}")
+                authViewModel.saveToken(loginResponse!!.token)
+                RetrofitClientV1.instance.getMe(authViewModel.getToken().toString())
                     .enqueue(object : Callback<User> {
                         override fun onResponse(call: Call<User>, response: Response<User>) {
                             if (response.isSuccessful) {
@@ -81,7 +83,7 @@ private fun loginUser(email: String, password: String, navController: NavHostCon
 }
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel = viewModel()) {
     var login by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -121,7 +123,7 @@ fun LoginScreen(navController: NavHostController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Button(
-                        onClick = { loginUser(login, password, navController) },
+                        onClick = { loginUser(login, password, navController, authViewModel) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(Color.Transparent)
                     ) {
