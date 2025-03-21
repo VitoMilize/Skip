@@ -57,7 +57,7 @@ fun MainScreenStudent(navController: NavHostController, authViewModel: AuthViewM
             HeadingTextComponent(value = nameState.value)
             Spacer(modifier = Modifier.height(25.dp))
             CreateRequestButton{ navController.navigate("CreateRequest") }
-            ViewOwnRequestsButton {}
+            ViewOwnRequestsButton { navController.navigate("WatchRequests") }
         }
     }
 }

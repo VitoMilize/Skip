@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClientV1 {
-    private const val BASE_URL = "https://j2fyo7-79-136-223-200.ru.tuna.am/api/"
+    private const val BASE_URL = "https://ukw4h5-178-130-142-179.ru.tuna.am/api/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
